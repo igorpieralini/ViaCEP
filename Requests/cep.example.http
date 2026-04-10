@@ -1,0 +1,114 @@
+### =====================================================================
+### ViaCEP API — Exemplo de uso
+### Extensão necessária: REST Client (humao.rest-client) no VS Code
+### =====================================================================
+
+### 1. Configure as variáveis abaixo:
+@baseUrl = http://localhost:5000
+@token   = perigor
+
+### =====================================================================
+### ✅ SUCESSO — CEP encontrado (200 OK)
+### =====================================================================
+
+### CEP simples (8 dígitos)
+# @name consultaCep
+GET {{baseUrl}}/api/cep/01310100
+Accept: application/json
+X-Api-Key: {{token}}
+
+### Resposta esperada:
+# HTTP/1.1 200 OK
+# {
+#   "cep": "01310-100",
+#   "logradouro": "Avenida Paulista",
+#   "complemento": "de 610 a 610 - lado par",
+#   "bairro": "Bela Vista",
+#   "cidade": "São Paulo",
+#   "estado": "SP",
+#   "ibge": "3550308",
+#   "gia": "1004",
+#   "ddd": "11",
+#   "siafi": "7107"
+# }
+
+###
+
+### CEP com hífen — o sistema aceita e normaliza
+GET {{baseUrl}}/api/cep/01310-100
+Accept: application/json
+X-Api-Key: {{token}}
+
+###
+
+### Outro CEP válido — Rio de Janeiro
+GET {{baseUrl}}/api/cep/22070010
+Accept: application/json
+X-Api-Key: {{token}}
+
+###
+
+### Outro CEP válido — Brasília
+GET {{baseUrl}}/api/cep/70050902
+Accept: application/json
+X-Api-Key: {{token}}
+
+### =====================================================================
+### ❌ ERRO 400 — CEP com formato inválido
+### =====================================================================
+
+### Letras no CEP
+GET {{baseUrl}}/api/cep/ABCDEFGH
+Accept: application/json
+X-Api-Key: {{token}}
+
+### Resposta esperada:
+# HTTP/1.1 400 Bad Request
+# {
+#   "mensagem": "CEP inválido. Informe somente 8 dígitos numéricos.",
+#   "statusCode": 400
+# }
+
+###
+
+### CEP com menos de 8 dígitos
+GET {{baseUrl}}/api/cep/0131010
+Accept: application/json
+X-Api-Key: {{token}}
+
+### =====================================================================
+### ❌ ERRO 404 — CEP não encontrado
+### =====================================================================
+
+GET {{baseUrl}}/api/cep/00000000
+Accept: application/json
+X-Api-Key: {{token}}
+
+### Resposta esperada:
+# HTTP/1.1 404 Not Found
+# {
+#   "mensagem": "CEP '00000000' não encontrado.",
+#   "statusCode": 404
+# }
+
+### =====================================================================
+### ❌ ERRO 401 — Sem token ou token errado
+### =====================================================================
+
+### Sem header X-Api-Key
+GET {{baseUrl}}/api/cep/01310100
+Accept: application/json
+
+### Resposta esperada:
+# HTTP/1.1 401 Unauthorized
+# {
+#   "mensagem": "Token de acesso inválido ou ausente.",
+#   "statusCode": 401
+# }
+
+###
+
+### Token incorreto
+GET {{baseUrl}}/api/cep/01310100
+Accept: application/json
+X-Api-Key: token-errado

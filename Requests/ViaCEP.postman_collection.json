@@ -1,0 +1,145 @@
+{
+  "info": {
+    "name": "ViaCEP API",
+    "description": "Coleção para testar a ViaCEP API. Configure a variável `token` com o valor definido em appsettings.json → ApiKey.Token.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "perigor",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "CEP",
+      "item": [
+        {
+          "name": "✅ CEP válido — Av. Paulista (SP)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Api-Key", "value": "{{token}}" },
+              { "key": "Accept",    "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cep/01310100",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cep", "01310100"]
+            }
+          }
+        },
+        {
+          "name": "✅ CEP com hífen — Av. Paulista (SP)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Api-Key", "value": "{{token}}" },
+              { "key": "Accept",    "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cep/01310-100",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cep", "01310-100"]
+            }
+          }
+        },
+        {
+          "name": "✅ CEP válido — Copacabana (RJ)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Api-Key", "value": "{{token}}" },
+              { "key": "Accept",    "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cep/22070010",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cep", "22070010"]
+            }
+          }
+        },
+        {
+          "name": "✅ CEP válido — Esplanada dos Ministérios (DF)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Api-Key", "value": "{{token}}" },
+              { "key": "Accept",    "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cep/70050902",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cep", "70050902"]
+            }
+          }
+        },
+        {
+          "name": "❌ CEP inválido — letras (400)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Api-Key", "value": "{{token}}" },
+              { "key": "Accept",    "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cep/ABCDEFGH",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cep", "ABCDEFGH"]
+            }
+          }
+        },
+        {
+          "name": "❌ CEP curto — menos de 8 dígitos (400)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Api-Key", "value": "{{token}}" },
+              { "key": "Accept",    "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cep/0131010",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cep", "0131010"]
+            }
+          }
+        },
+        {
+          "name": "❌ CEP inexistente (404)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Api-Key", "value": "{{token}}" },
+              { "key": "Accept",    "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cep/00000000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cep", "00000000"]
+            }
+          }
+        },
+        {
+          "name": "❌ Sem token (401)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cep/01310100",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cep", "01310100"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
