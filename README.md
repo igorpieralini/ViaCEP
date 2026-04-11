@@ -1,6 +1,8 @@
 # ViaCEP API
 
-API para consulta de endereços brasileiros a partir do CEP, implementada em **6 linguagens diferentes** com a mesma interface.
+Este projeto demonstra a utilizalçao da API pública brasileira de consulta de CEP (VIA CEP). O objetivo foi demonstrar a utilização com algumas das linguagens mais utilizadas atualmente.
+
+Via CEP é totalmente gratuita, assim podendo evitar cobranças desncessárias de certos provedores.
 
 ## Portas
 
@@ -78,7 +80,3 @@ cd java && mvn spring-boot:run
 ```bash
 cd php && composer install && php -S localhost:5005 -t public
 ```
-
-## Licença
-
-[MIT](LICENSE)
