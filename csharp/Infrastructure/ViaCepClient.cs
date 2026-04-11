@@ -21,7 +21,7 @@ public class ViaCepClient : IViaCepClient
         _logger = logger;
     }
 
-    public async Task<ViaCepResponseDto?> BuscarCepAsync(string cep)
+    public async Task<ViaCepResponseDto?> BuscarCepAsync(string cep, CancellationToken cancellationToken = default)
     {
         var url = $"{cep}/json/";
 
@@ -31,7 +31,7 @@ public class ViaCepClient : IViaCepClient
 
         try
         {
-            response = await _httpClient.GetAsync(url);
+            response = await _httpClient.GetAsync(url, cancellationToken);
         }
         catch (HttpRequestException ex)
         {
@@ -51,7 +51,7 @@ public class ViaCepClient : IViaCepClient
             throw new ExternalServiceException($"ViaCEP retornou status inesperado: {(int)response.StatusCode}");
         }
 
-        var resultado = await response.Content.ReadFromJsonAsync<ViaCepResponseDto>(_jsonOptions);
+        var resultado = await response.Content.ReadFromJsonAsync<ViaCepResponseDto>(_jsonOptions, cancellationToken);
 
         _logger.LogInformation("Resposta recebida da ViaCEP para o CEP: {Cep}", cep);
 

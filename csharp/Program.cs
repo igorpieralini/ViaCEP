@@ -11,6 +11,17 @@ builder.Logging.AddDebug();
 // ── Controllers ───────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
 
+// ── CORS ──────────────────────────────────────────────────────────────────────
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // ── Swagger / OpenAPI ─────────────────────────────────────────────────────────
 builder.Services.AddSwaggerDocumentation();
 
@@ -19,6 +30,9 @@ builder.Services.AddApiKeyAuthentication(builder.Configuration);
 
 // ── Domínio e Infraestrutura ──────────────────────────────────────────────────
 builder.Services.AddViaCepServices(builder.Configuration);
+
+// ── Health Checks ─────────────────────────────────────────────────────────────
+builder.Services.AddHealthChecks();
 
 // ─────────────────────────────────────────────────────────────────────────────
 var app = builder.Build();
@@ -34,7 +48,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseHttpsRedirection();
+app.UseCors();
 app.UseMiddleware<ApiKeyMiddleware>();
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 app.Run();

@@ -4,7 +4,6 @@ using ViaCEP.Api.Configurations;
 using ViaCEP.Api.Infrastructure;
 using ViaCEP.Api.Interfaces;
 using ViaCEP.Api.Models.DTOs;
-using ViaCEP.Api.Models.Entities;
 using Microsoft.Extensions.Options;
 
 namespace ViaCEP.Api.Services;
@@ -31,7 +30,7 @@ public class ViaCepService : IViaCepService
         _settings = settings.Value;
     }
 
-    public async Task<EnderecoResponseDto> ConsultarCepAsync(string cep)
+    public async Task<EnderecoResponseDto> ConsultarCepAsync(string cep, CancellationToken cancellationToken = default)
     {
         var cepLimpo = cep.Replace("-", "").Trim();
 
@@ -52,7 +51,7 @@ public class ViaCepService : IViaCepService
 
         try
         {
-            resposta = await _viaCepClient.BuscarCepAsync(cepLimpo);
+            resposta = await _viaCepClient.BuscarCepAsync(cepLimpo, cancellationToken);
         }
         catch (ExternalServiceException)
         {
@@ -65,8 +64,7 @@ public class ViaCepService : IViaCepService
             throw new KeyNotFoundException($"CEP '{cepLimpo}' não encontrado.");
         }
 
-        var endereco = MapearParaEntidade(resposta);
-        var resultado = MapearParaDto(endereco);
+        var resultado = MapearParaDto(resposta);
 
         _cache.Set(cacheKey, resultado, TimeSpan.FromMinutes(_settings.CacheMinutes));
         _logger.LogInformation("CEP {Cep} armazenado em cache por {Min} minutos.", cepLimpo, _settings.CacheMinutes);
@@ -74,31 +72,17 @@ public class ViaCepService : IViaCepService
         return resultado;
     }
 
-    private static Endereco MapearParaEntidade(ViaCepResponseDto dto) => new()
+    private static EnderecoResponseDto MapearParaDto(ViaCepResponseDto dto) => new()
     {
-        Cep        = dto.Cep        ?? string.Empty,
-        Logradouro = dto.Logradouro ?? string.Empty,
-        Complemento= dto.Complemento?? string.Empty,
-        Bairro     = dto.Bairro     ?? string.Empty,
-        Cidade     = dto.Localidade ?? string.Empty,
-        Estado     = dto.Uf         ?? string.Empty,
-        Ibge       = dto.Ibge       ?? string.Empty,
-        Gia        = dto.Gia        ?? string.Empty,
-        Ddd        = dto.Ddd        ?? string.Empty,
-        Siafi      = dto.Siafi      ?? string.Empty,
-    };
-
-    private static EnderecoResponseDto MapearParaDto(Endereco e) => new()
-    {
-        Cep         = e.Cep,
-        Logradouro  = e.Logradouro,
-        Complemento = e.Complemento,
-        Bairro      = e.Bairro,
-        Cidade      = e.Cidade,
-        Estado      = e.Estado,
-        Ibge        = e.Ibge,
-        Gia         = e.Gia,
-        Ddd         = e.Ddd,
-        Siafi       = e.Siafi,
+        Cep         = dto.Cep         ?? string.Empty,
+        Logradouro  = dto.Logradouro  ?? string.Empty,
+        Complemento = dto.Complemento ?? string.Empty,
+        Bairro      = dto.Bairro      ?? string.Empty,
+        Cidade      = dto.Localidade  ?? string.Empty,
+        Estado      = dto.Uf          ?? string.Empty,
+        Ibge        = dto.Ibge        ?? string.Empty,
+        Gia         = dto.Gia         ?? string.Empty,
+        Ddd         = dto.Ddd         ?? string.Empty,
+        Siafi       = dto.Siafi       ?? string.Empty,
     };
 }

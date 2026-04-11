@@ -52,13 +52,13 @@ public class CepController : ControllerBase
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetCep([FromRoute] string cep)
+    public async Task<IActionResult> GetCep([FromRoute] string cep, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Requisição recebida para o CEP: {Cep}", cep);
 
         try
         {
-            var endereco = await _viaCepService.ConsultarCepAsync(cep);
+            var endereco = await _viaCepService.ConsultarCepAsync(cep, cancellationToken);
             return Ok(endereco);
         }
         catch (ArgumentException ex)

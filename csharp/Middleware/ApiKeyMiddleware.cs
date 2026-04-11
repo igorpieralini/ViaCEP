@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using ViaCEP.Api.Configurations;
 using ViaCEP.Api.Models.DTOs;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace ViaCEP.Api.Middleware;
@@ -8,6 +10,7 @@ namespace ViaCEP.Api.Middleware;
 public class ApiKeyMiddleware
 {
     private const string HeaderName = "X-Api-Key";
+    private static readonly string[] _openPaths = new[] { "/swagger", "/health" };
     private readonly RequestDelegate _next;
     private readonly ILogger<ApiKeyMiddleware> _logger;
 
@@ -19,16 +22,19 @@ public class ApiKeyMiddleware
 
     public async Task InvokeAsync(HttpContext context, IOptions<ApiKeySettings> settings)
     {
-        // Swagger e OpenAPI passam livremente
         var path = context.Request.Path.Value ?? string.Empty;
-        if (path.StartsWith("/swagger", StringComparison.OrdinalIgnoreCase))
+        if (_openPaths.Any(p => path.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
         {
             await _next(context);
             return;
         }
 
-        if (!context.Request.Headers.TryGetValue(HeaderName, out var receivedKey)
-            || receivedKey != settings.Value.Token)
+        var isValid = context.Request.Headers.TryGetValue(HeaderName, out var receivedKey)
+            && CryptographicOperations.FixedTimeEquals(
+                Encoding.UTF8.GetBytes(receivedKey.ToString()),
+                Encoding.UTF8.GetBytes(settings.Value.Token));
+
+        if (!isValid)
         {
             _logger.LogWarning("Acesso negado: token inválido ou ausente. Path: {Path}", path);
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;

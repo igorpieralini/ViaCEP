@@ -3,6 +3,8 @@ using ViaCEP.Api.Infrastructure;
 using ViaCEP.Api.Interfaces;
 using ViaCEP.Api.Services;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Extensions.Http;
 
 namespace ViaCEP.Api.Configurations;
 
@@ -27,7 +29,10 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(settings.BaseUrl);
                 client.Timeout = TimeSpan.FromSeconds(settings.TimeoutSeconds);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
-            });
+            })
+            .AddPolicyHandler(HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .WaitAndRetryAsync(3, attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt))));
 
         services.AddScoped<IViaCepService, ViaCepService>();
 
