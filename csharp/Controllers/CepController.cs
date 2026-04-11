@@ -19,34 +19,6 @@ public class CepController : ControllerBase
         _logger = logger;
     }
 
-    /// <summary>Consulta informações de endereço para o CEP informado.</summary>
-    /// <param name="cep">CEP com 8 dígitos numéricos (com ou sem hífen).</param>
-    /// <returns>Dados do endereço correspondente ao CEP.</returns>
-    /// <remarks>
-    /// Exemplos de requisição:
-    ///
-    ///     GET /api/cep/01310100
-    ///     GET /api/cep/01310-100
-    ///
-    /// Exemplo de resposta (200 OK):
-    ///
-    ///     {
-    ///       "cep": "01310-100",
-    ///       "logradouro": "Avenida Paulista",
-    ///       "complemento": "de 610 a 610 - lado par",
-    ///       "bairro": "Bela Vista",
-    ///       "cidade": "São Paulo",
-    ///       "estado": "SP",
-    ///       "ibge": "3550308",
-    ///       "gia": "1004",
-    ///       "ddd": "11",
-    ///       "siafi": "7107"
-    ///     }
-    /// </remarks>
-    /// <response code="200">Endereço encontrado com sucesso.</response>
-    /// <response code="400">CEP informado possui formato inválido.</response>
-    /// <response code="404">CEP não encontrado na base da ViaCEP.</response>
-    /// <response code="500">Erro interno ou falha na comunicação com o serviço ViaCEP.</response>
     [HttpGet("{cep}")]
     [ProducesResponseType(typeof(EnderecoResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
@@ -63,12 +35,10 @@ public class CepController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            _logger.LogWarning("Formato inválido de CEP: {Cep}. Detalhe: {Mensagem}", cep, ex.Message);
             return BadRequest(new ErrorResponseDto(ex.Message, StatusCodes.Status400BadRequest));
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.LogWarning("CEP não encontrado: {Cep}. Detalhe: {Mensagem}", cep, ex.Message);
             return NotFound(new ErrorResponseDto(ex.Message, StatusCodes.Status404NotFound));
         }
         catch (ExternalServiceException ex)
@@ -83,5 +53,7 @@ public class CepController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new ErrorResponseDto("Ocorreu um erro interno inesperado.", StatusCodes.Status500InternalServerError));
         }
+    }
+}
     }
 }

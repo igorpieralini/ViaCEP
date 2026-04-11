@@ -1,23 +1,26 @@
 # ViaCEP API
 
-API para consulta de endereços brasileiros a partir do CEP, implementada em múltiplas linguagens.
+API para consulta de endereços brasileiros a partir do CEP, implementada em **6 linguagens diferentes** com a mesma interface.
 
-## Estrutura
+## Portas
 
-| Pasta | Linguagem | Framework | Status |
-|-------|-----------|-----------|--------|
-| [csharp/](csharp/) | C# | ASP.NET 6 | ✅ Implementado |
-| [java/](java/) | Java | Spring Boot | 🔜 Em breve |
-| [python/](python/) | Python | FastAPI | 🔜 Em breve |
-| [nodejs/](nodejs/) | Node.js | Express | 🔜 Em breve |
-| [php/](php/) | PHP | Laravel | 🔜 Em breve |
-| [typescript/](typescript/) | TypeScript | NestJS | 🔜 Em breve |
+| Linguagem  | Pasta        | Porta  | Framework        |
+|------------|--------------|--------|------------------|
+| C#         | `csharp/`    | `5000` | ASP.NET 6        |
+| Node.js    | `nodejs/`    | `5001` | Express          |
+| TypeScript | `typescript/`| `5002` | Express + TS     |
+| Python     | `python/`    | `5003` | FastAPI          |
+| Java       | `java/`      | `5004` | Spring Boot 3    |
+| PHP        | `php/`       | `5005` | Slim 4           |
+
+## Endpoint
+
+```
+GET /api/cep/{cep}
+Header: X-Api-Key: {seu-token}
+```
 
 ## Exemplo de resposta
-
-```
-GET /api/cep/01310100
-```
 
 ```json
 {
@@ -28,11 +31,53 @@ GET /api/cep/01310100
   "cidade": "São Paulo",
   "estado": "SP",
   "ibge": "3550308",
-  "ddd": "11"
+  "gia": "1004",
+  "ddd": "11",
+  "siafi": "7107"
 }
 ```
 
-Cada implementação segue a mesma interface de API. Consulte o README de cada pasta para instruções específicas.
+## Features (todas as linguagens)
+
+- Autenticação via API Key (header `X-Api-Key`)
+- Cache em memória (configurável)
+- Retry com backoff exponencial
+- Health Check (`GET /health`)
+- Swagger/OpenAPI docs
+- CORS habilitado
+- Comparação de token segura (timing-safe)
+
+## Como rodar
+
+### C# (.NET 6)
+```bash
+cd csharp && dotnet run
+```
+
+### Node.js
+```bash
+cd nodejs && npm install && npm start
+```
+
+### TypeScript
+```bash
+cd typescript && npm install && npm run dev
+```
+
+### Python
+```bash
+cd python && pip install -r requirements.txt && python -m app.main
+```
+
+### Java (Maven + JDK 17)
+```bash
+cd java && mvn spring-boot:run
+```
+
+### PHP (Composer + PHP 8.1+)
+```bash
+cd php && composer install && php -S localhost:5005 -t public
+```
 
 ## Licença
 
