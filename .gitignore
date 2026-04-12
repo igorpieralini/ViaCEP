@@ -39,6 +39,11 @@ java/target/
 ## PHP
 php/vendor/
 
+## Environment
+.env
+.env.local
+.env.*.local
+
 ## Env files (contêm segredos)
 .env
 
@@ -51,7 +56,9 @@ logs/
 Thumbs.db
 desktop.ini
 
-## Sensitive — nunca commite o appsettings com token real
+## Sensitive — configs com token real
+csharp/appsettings.json
+java/src/main/resources/application.properties
 appsettings.Production.json
 
 ## dotnet secrets
