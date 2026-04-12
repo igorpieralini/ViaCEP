@@ -15,13 +15,14 @@
 
 Se você encontrar uma vulnerabilidade de segurança neste projeto, **não abra uma issue pública**.
 
-Em vez disso, envie um e-mail para o mantenedor do repositório com:
+Em vez disso, envie um e-mail para **security@example.com** com:
 
 1. Descrição da vulnerabilidade
 2. Passos para reprodução
 3. Impacto potencial
 4. Sugestão de correção (se houver)
 
+Como canal alternativo, você também pode usar **GitHub Security Advisories** do repositório: `https://github.com/OWNER/REPO/security/advisories/new`.
 Você receberá uma confirmação em até **48 horas** e uma resposta detalhada em até **7 dias**.
 
 ## Práticas de segurança adotadas
@@ -45,7 +46,8 @@ Você receberá uma confirmação em até **48 horas** e uma resposta detalhada 
 ### Configuração
 
 - Arquivos `.env` estão no `.gitignore` — apenas `.env.example` é versionado
-- Secrets nunca devem ser commitados no repositório
+- Arquivos de configuração versionados devem conter apenas valores de exemplo/placeholder; secrets reais devem ficar em variáveis de ambiente ou arquivos externos não versionados
+- Caso alguma credencial seja exposta no repositório, ela deve ser removida dos arquivos versionados e rotacionada imediatamente
 
 ## Disclosure
 
