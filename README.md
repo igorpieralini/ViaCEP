@@ -1,19 +1,19 @@
 # ViaCEP API
 
-Este projeto demonstra a utilizalçao da API pública brasileira de consulta de CEP (VIA CEP). O objetivo foi demonstrar a utilização com algumas das linguagens mais utilizadas atualmente.
+Wrapper da API pública [ViaCEP](https://viacep.com.br) para consulta de endereços brasileiros por CEP, implementado em **6 linguagens** com a mesma interface REST. O projeto serve como referência de boas práticas de programação.
 
-Via CEP é totalmente gratuita, assim podendo evitar cobranças desncessárias de certos provedores.
+> ViaCEP é gratuita e não requer cadastro — ideal para substituir provedores pagos.
 
-## Portas
+## Stack
 
-| Linguagem  | Pasta        | Porta  | Framework        |
-|------------|--------------|--------|------------------|
-| C#         | `csharp/`    | `5000` | ASP.NET 6        |
-| Node.js    | `nodejs/`    | `5001` | Express          |
-| TypeScript | `typescript/`| `5002` | Express + TS     |
-| Python     | `python/`    | `5003` | FastAPI          |
-| Java       | `java/`      | `5004` | Spring Boot 3    |
-| PHP        | `php/`       | `5005` | Slim 4           |
+| Linguagem  | Pasta         | Porta  | Framework      |
+|------------|---------------|--------|----------------|
+| C#         | `csharp/`     | `5000` | ASP.NET 6      |
+| Node.js    | `nodejs/`     | `5001` | Express        |
+| TypeScript | `typescript/` | `5002` | Express + TS   |
+| Python     | `python/`     | `5003` | FastAPI        |
+| Java       | `java/`       | `5004` | Spring Boot 3  |
+| PHP        | `php/`        | `5005` | Slim 4         |
 
 ## Endpoint
 
@@ -22,7 +22,7 @@ GET /api/cep/{cep}
 Header: X-Api-Key: {seu-token}
 ```
 
-## Exemplo de resposta
+### Exemplo de resposta
 
 ```json
 {
@@ -39,44 +39,24 @@ Header: X-Api-Key: {seu-token}
 }
 ```
 
-## Features (todas as linguagens)
-
-- Autenticação via API Key (header `X-Api-Key`)
-- Cache em memória (configurável)
-- Retry com backoff exponencial
-- Health Check (`GET /health`)
-- Swagger/OpenAPI docs
-- CORS habilitado
-- Comparação de token segura (timing-safe)
-
 ## Como rodar
 
-### C# (.NET 6)
 ```bash
+# C# (.NET 6)
 cd csharp && dotnet run
-```
 
-### Node.js
-```bash
+# Node.js
 cd nodejs && npm install && npm start
-```
 
-### TypeScript
-```bash
+# TypeScript
 cd typescript && npm install && npm run dev
-```
 
-### Python
-```bash
+# Python
 cd python && pip install -r requirements.txt && python -m app.main
-```
 
-### Java (Maven + JDK 17)
-```bash
+# Java (Maven + JDK 17)
 cd java && mvn spring-boot:run
-```
 
-### PHP (Composer + PHP 8.1+)
-```bash
+# PHP (Composer + PHP 8.1+)
 cd php && composer install && php -S localhost:5005 -t public
 ```
