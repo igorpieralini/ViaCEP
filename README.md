@@ -1,6 +1,7 @@
 # ViaCEP API
 
-Wrapper da API pública [ViaCEP](https://viacep.com.br) para consulta de endereços brasileiros por CEP, implementado em **6 linguagens** com a mesma interface REST. O projeto serve como referência de boas práticas de programação.
+P*confirojeto focado no estudo de *guração de repositórios no GitHub** e **Git Flow**, 
+criando um wrapper da API pública [ViaCEP](https://viacep.com.br) para consulta de endereços brasileiros por CEP. Implementado em **6 linguagens** com a mesma interface REST, servindo como referência prática de CI/CD, branch strategy, Dependabot, proteção de secrets e boas práticas de versionamento.
 
 > ViaCEP é gratuita e não requer cadastro — ideal para substituir provedores pagos.
 
