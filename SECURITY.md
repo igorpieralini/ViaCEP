@@ -45,7 +45,8 @@ Você receberá uma confirmação em até **48 horas** e uma resposta detalhada 
 ### Configuração
 
 - Arquivos `.env` estão no `.gitignore` — apenas `.env.example` é versionado
-- Secrets nunca devem ser commitados no repositório
+- Arquivos de configuração versionados devem conter apenas valores de exemplo/placeholder; secrets reais devem ficar em variáveis de ambiente ou arquivos externos não versionados
+- Caso alguma credencial seja exposta no repositório, ela deve ser removida dos arquivos versionados e rotacionada imediatamente
 
 ## Disclosure
 
