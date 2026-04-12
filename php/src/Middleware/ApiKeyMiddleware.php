@@ -16,7 +16,7 @@ class ApiKeyMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $expected = $_ENV['API_KEY'] ?? 'CHANGE_ME';
+        $expected = $_ENV['API_KEY'];
         $received = $request->getHeaderLine(self::HEADER_NAME);
 
         if (!hash_equals($expected, $received)) {

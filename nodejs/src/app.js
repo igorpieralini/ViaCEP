@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
@@ -6,7 +7,7 @@ const { apiKeyMiddleware } = require('./middleware/apiKeyMiddleware');
 const cepRoutes = require('./routes/cepRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
