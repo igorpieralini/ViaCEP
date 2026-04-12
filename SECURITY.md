@@ -15,13 +15,14 @@
 
 Se você encontrar uma vulnerabilidade de segurança neste projeto, **não abra uma issue pública**.
 
-Em vez disso, envie um e-mail para o mantenedor do repositório com:
+Em vez disso, envie um e-mail para **security@example.com** com:
 
 1. Descrição da vulnerabilidade
 2. Passos para reprodução
 3. Impacto potencial
 4. Sugestão de correção (se houver)
 
+Como canal alternativo, você também pode usar **GitHub Security Advisories** do repositório: `https://github.com/OWNER/REPO/security/advisories/new`.
 Você receberá uma confirmação em até **48 horas** e uma resposta detalhada em até **7 dias**.
 
 ## Práticas de segurança adotadas
